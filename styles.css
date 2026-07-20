@@ -468,6 +468,13 @@ h1 span {
   overflow-wrap: anywhere;
 }
 
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  align-items: center;
+}
+
 .contact-card p:last-child,
 .contact-intro:last-child {
   margin-bottom: 0;
