@@ -335,6 +335,12 @@ h1 span {
   font-weight: 800;
 }
 
+.timeline a {
+  color: #235c97;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
 .timeline p {
   margin-bottom: 0;
 }
