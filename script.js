@@ -3,44 +3,47 @@ if (year) {
   year.textContent = new Date().getFullYear();
 }
 
-const publications = document.querySelectorAll(".publication");
-const pagination = document.querySelector(".pagination");
-const publicationsPerPage = 5;
-let currentPage = 1;
+function paginate(items, pagination) {
+  const perPage = 5;
+  let currentPage = 1;
 
-function updatePublicationPage() {
-  const totalPages = Math.max(1, Math.ceil(publications.length / publicationsPerPage));
-  const firstPublication = (currentPage - 1) * publicationsPerPage;
-  const lastPublication = firstPublication + publicationsPerPage;
+  function updateItemPage() {
+    const totalPages = Math.max(1, Math.ceil(items.length / perPage));
+    const firstItem = (currentPage - 1) * perPage;
+    const lastItem = firstItem + perPage;
 
-  publications.forEach((publication, index) => {
-    publication.classList.toggle("is-hidden", index < firstPublication || index >= lastPublication);
-  });
-
-  pagination?.querySelectorAll("button").forEach((button) => {
-    const page = Number(button.dataset.page);
-    button.classList.toggle("active", page === currentPage);
-    button.setAttribute("aria-current", page === currentPage ? "page" : "false");
-  });
-}
-
-if (pagination && publications.length > publicationsPerPage) {
-  const totalPages = Math.ceil(publications.length / publicationsPerPage);
-
-  for (let page = 1; page <= totalPages; page += 1) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.dataset.page = page;
-    button.textContent = page;
-    button.setAttribute("aria-label", `Page ${page}`);
-    button.addEventListener("click", () => {
-      currentPage = page;
-      updatePublicationPage();
+    items.forEach((item, index) => {
+      item.classList.toggle("is-hidden", index < firstItem || index >= lastItem);
     });
-    pagination.append(button);
+
+    pagination?.querySelectorAll("button").forEach((button) => {
+      const page = Number(button.dataset.page);
+      button.classList.toggle("active", page === currentPage);
+      button.setAttribute("aria-current", page === currentPage ? "page" : "false");
+    });
   }
 
-  updatePublicationPage();
-} else if (pagination) {
-  pagination.hidden = true;
+  if (pagination && items.length > perPage) {
+    const totalPages = Math.ceil(items.length / perPage);
+
+    for (let page = 1; page <= totalPages; page += 1) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.page = page;
+      button.textContent = page;
+      button.setAttribute("aria-label", `Page ${page}`);
+      button.addEventListener("click", () => {
+        currentPage = page;
+        updateItemPage();
+      });
+      pagination.append(button);
+    }
+
+    updateItemPage();
+  } else if (pagination) {
+    pagination.hidden = true;
+  }
 }
+
+paginate(document.querySelectorAll(".timeline article"), document.querySelector("#news .pagination"));
+paginate(document.querySelectorAll(".publication"), document.querySelector('[aria-label="Publication pages"]'));
